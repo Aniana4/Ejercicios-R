@@ -36,7 +36,8 @@ dcast.data.table(mi.iris, Species ~ id.grupo,fun=length, value.var = "Species")
     ## 2: versicolor 25 25
     ## 3:  virginica 25 25
 
-Generalizamos la solución \*\*\*
+Generalizamos la solución
+-------------------------
 
 ``` r
 mi.iris <- data.table(iris)
