@@ -5,21 +5,29 @@ El ejercicio pretende trocear un data frame en n trozos iguales muestreados alea
 
 ``` r
 mi.iris <- data.table(iris)
+```
 
-#Agregamos una columna con un valor aleatorio de 1 al número de muestras de cada especie
+Agregamos una columna con un valor aleatorio de 1 al número de muestras de cada especie
 
+``` r
 mi.iris[, selector:= sample(1:length(Sepal.Width), length(Sepal.Width)), by = c("Species")]
+```
 
-# marcamos el grupo al que pertenece dentro de cada especie
+Marcamos el grupo al que pertenece dentro de cada especie
 
+``` r
 mi.iris[, id.grupo:= ceiling(selector/(length(Sepal.Length)/2)), by = c("Species")]
+```
 
-# Clasificamos por especie y grupo
+Clasificamos por especie y grupo
 
+``` r
 mi.iris$conjunto <- paste(as.character(mi.iris$Species), ".", as.character(mi.iris$id.grupo), sep = "")
+```
 
-# Comprobamos que se ha agrupado correctamente
+Comprobamos que se ha agrupado correctamente
 
+``` r
 dcast.data.table(mi.iris, Species ~ id.grupo,fun=length, value.var = "Species")
 ```
 
@@ -28,29 +36,14 @@ dcast.data.table(mi.iris, Species ~ id.grupo,fun=length, value.var = "Species")
     ## 2: versicolor 25 25
     ## 3:  virginica 25 25
 
-Generalizamos la solución
--------------------------
-
-------------------------------------------------------------------------
+Generalizamos la solución \*\*\*
 
 ``` r
 mi.iris <- data.table(iris)
 trozos <- 5 
-
-#Agregamos una columna con un valor aleatorio de 1 al número de muestras de cada especie
-
 mi.iris[, selector:= sample(1:length(Sepal.Width), length(Sepal.Width)), by = c("Species")]
-
-# marcamos el grupo al que pertenece dentro de cada especie
-
 mi.iris[, id.grupo:= ceiling(selector/(length(Sepal.Length)/trozos)), by = c("Species")]
-
-# Clasificamos por especie y grupo
-
 mi.iris$conjunto <- paste(as.character(mi.iris$Species), ".", as.character(mi.iris$id.grupo), sep = "")
-
-# Comprobamos que se ha troceado correctamente
-
 dcast.data.table(mi.iris, Species ~ id.grupo,fun=length, value.var = "Species")
 ```
 
